@@ -36,7 +36,7 @@ export default function ChatPage() {
       const data = await res.json()
       const bot: Message = { id: crypto.randomUUID(), role: 'assistant', content: data.reply }
       setMessages((m) => [...m, bot])
-    } catch (err) {
+    } catch {
       const errMsg: Message = { id: crypto.randomUUID(), role: 'assistant', content: 'Bir şeyler ters gitti. Tekrar dener misin?' }
       setMessages((m) => [...m, errMsg])
     }
@@ -88,5 +88,3 @@ export default function ChatPage() {
     </div>
   )
 }
-
-

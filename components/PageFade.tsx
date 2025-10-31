@@ -21,5 +21,3 @@ export function PageFade({ children }: { children: ReactNode }) {
     </AnimatePresence>
   )
 }
-
-

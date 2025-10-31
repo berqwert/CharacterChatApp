@@ -18,31 +18,21 @@ export function SupabaseProvider({ children }: PropsWithChildren<{}>) {
   useEffect(() => {
     // Check for OAuth callback in URL hash
     const hashParams = new URLSearchParams(window.location.hash.substring(1))
-    const accessToken = hashParams.get('access_token')
     const error = hashParams.get('error')
     const errorDescription = hashParams.get('error_description')
     
     if (error) {
-      console.error('OAuth callback error:', error, errorDescription)
       alert(`Giriş hatası: ${errorDescription || error}`)
-      // Clean URL
       window.history.replaceState(null, '', window.location.pathname)
     }
     
     // Initial session check
-    supabase.auth.getSession().then(({ data, error: sessionError }) => {
-      if (sessionError) {
-        console.error('Session error:', sessionError)
-      } else {
-        console.log('Initial session:', data.session?.user?.email ?? 'no session')
-        setSession(data.session ?? null)
-      }
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session ?? null)
     })
     
     // Listen for auth state changes (including OAuth callbacks)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, sess) => {
-      console.log('Auth state changed:', event, sess?.user?.email ?? 'no user')
-      
       if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
         setSession(sess)
         // Clean up URL hash after successful auth
@@ -71,13 +61,9 @@ export function SupabaseProvider({ children }: PropsWithChildren<{}>) {
       })
       
       if (error) {
-        console.error('OAuth error:', error)
         alert(`Giriş hatası: ${error.message}`)
-      } else {
-        console.log('OAuth redirect started:', data.url)
       }
-    } catch (err) {
-      console.error('Sign in error:', err)
+    } catch {
       alert('Giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.')
     }
   }

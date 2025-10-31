@@ -2,6 +2,7 @@ import './globals.css'
 import { ReactNode } from 'react'
 import { PageFade } from '@/components/PageFade'
 import { SupabaseProvider } from '@/components/SupabaseProvider'
+import { UserHeader } from '@/components/UserHeader'
 
 export const metadata = {
   title: 'CharacterChatApp',
@@ -13,6 +14,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="tr">
       <body className="min-h-screen antialiased">
         <SupabaseProvider>
+          <UserHeader />
           <PageFade>
             <div className="container-safe flex min-h-screen flex-col">
               <main className="flex-1 pb-16">{children}</main>

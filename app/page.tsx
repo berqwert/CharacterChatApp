@@ -13,6 +13,11 @@ export default function HomePage() {
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}>
         <h1 className="text-3xl font-semibold">Character Chat App</h1>
         <p className="mt-2 text-white/70">Basit başlangıç sürümü</p>
+        {user && (
+          <div className="mt-3 text-xs text-green-400">
+            ✓ Giriş yapıldı: {user.email}
+          </div>
+        )}
       </motion.div>
 
       <motion.div
@@ -48,13 +53,17 @@ export default function HomePage() {
             Google ile Giriş Yap
           </button>
         )}
-        <Link href="/chat" className="rounded-md bg-brand px-4 py-3 font-medium text-brand-foreground">
-          <motion.span whileTap={{ scale: 0.98 }} whileHover={{ y: -1 }} transition={{ duration: 0.08, ease: 'easeOut' }}
-            style={!user ? { opacity: 0.5, pointerEvents: 'none' } : {}} 
-          >
+        {user ? (
+          <Link href="/chat" className="rounded-md bg-brand px-4 py-3 font-medium text-brand-foreground">
+            <motion.span whileTap={{ scale: 0.98 }} whileHover={{ y: -1 }} transition={{ duration: 0.08, ease: 'easeOut' }}>
+              Sohbete Başla
+            </motion.span>
+          </Link>
+        ) : (
+          <div className="rounded-md bg-brand/50 px-4 py-3 font-medium text-brand-foreground opacity-50 cursor-not-allowed">
             Sohbete Başla
-          </motion.span>
-        </Link>
+          </div>
+        )}
         <p className="text-xs text-white/50">
           {user
             ? 'Başarıyla giriş yaptın! Sohbete başlayabilirsin.'

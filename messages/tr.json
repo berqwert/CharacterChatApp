@@ -1,0 +1,62 @@
+{
+  "HomePage": {
+    "title": "Karakter Sohbet Uygulaması",
+    "subtitle": "Basit başlangıç sürümü",
+    "signedIn": "Giriş yapıldı: {email}",
+    "signInWithGoogle": "Google ile Giriş Yap",
+    "startChatting": "Sohbete Başla",
+    "signedInMessage": "Başarıyla giriş yaptın! Sohbete başlayabilirsin.",
+    "needSignIn": "Önce Google ile giriş yapmalısın."
+  },
+  "ChatPage": {
+    "characterNotFound": "Karakter bulunamadı",
+    "typeMessage": "Mesaj yaz...",
+    "send": "Gönder",
+    "sending": "Gönderiliyor...",
+    "error": "Hata: {message}",
+    "somethingWentWrong": "Bir şeyler ters gitti. Tekrar dener misin?"
+  },
+  "ChatListPage": {
+    "title": "Sohbetler"
+  },
+  "CharactersPage": {
+    "title": "Karakterleri Seç"
+  },
+  "BottomNav": {
+    "chats": "Sohbetler",
+    "characters": "Karakterler"
+  },
+  "UserHeader": {
+    "signOut": "Çıkış Yap"
+  },
+  "Auth": {
+    "signInError": "Giriş hatası: {message}",
+    "signInErrorOccurred": "Giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin."
+  },
+  "LanguageSwitcher": {
+    "switchLanguage": "Dili Değiştir"
+  },
+  "Characters": {
+    "pirl": {
+      "description": "Eğlenceli ve çocuksu! Her şeyi oyun gibi görür, mutlu ve neşeli.",
+      "conversationStyle": "Çocuksu, heyecanlı, emoji kullanır, kısa ve neşeli cevaplar verir."
+    },
+    "ozkan": {
+      "description": "Profesyonel ve ciddi. İş odaklı, resmi ton kullanır, detaylara önem verir.",
+      "conversationStyle": "Ciddi, profesyonel, yapılandırılmış cevaplar. Resmi dil."
+    },
+    "deniz": {
+      "description": "Yaratıcı ve sanatsal. Renkli düşünceler, yaratıcı fikirler sunar.",
+      "conversationStyle": "Yaratıcı, metaforik, renkli anlatımlar. İlham verici."
+    },
+    "arda": {
+      "description": "Teknik ve mantıklı. Kod, teknoloji, problem çözme odaklı.",
+      "conversationStyle": "Teknik, mantıklı, kod örnekleri verir. Kısa ve net."
+    },
+    "elif": {
+      "description": "Yumuşak ve destekleyici. İçsel yolculuk, kişisel gelişim konularında yardımcı olur.",
+      "conversationStyle": "Yumuşak, anlayışlı, destekleyici. Kişisel gelişim odaklı."
+    }
+  }
+}
+

@@ -25,8 +25,8 @@ export async function POST(req: NextRequest) {
       : undefined
 
     const reply = lastUser
-      ? `${lastUser.slice(0, 80)} hakkında düşünüyorum... İlginç bir konu!`
-      : `Merhaba! Nasıl yardımcı olabilirim?`
+      ? `I'm thinking about ${lastUser.slice(0, 80)}... Interesting topic!`
+      : `Hello! How can I help you?`
 
     return new Response(JSON.stringify({ reply }), {
       status: 200,

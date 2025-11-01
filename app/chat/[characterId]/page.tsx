@@ -4,23 +4,33 @@ import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getCharacterById } from '@/lib/characters'
+import { useTranslation } from '@/lib/useTranslation'
 
 type Message = { id: string; role: 'user' | 'assistant'; content: string }
 
 export default function ChatPage() {
   const { characterId } = useParams<{ characterId: string }>()
   const character = getCharacterById(characterId || '')
+  const { t } = useTranslation()
   
   const [messages, setMessages] = useState<Message[]>(() => {
     if (!character) return []
-    return [
-      { 
-        id: 'm0', 
-        role: 'assistant', 
-        content: `Merhaba! Ben ${character.name} ${character.avatar} ${character.description}. Nasıl yardımcı olabilirim?` 
-      }
-    ]
+    return []
   })
+
+  useEffect(() => {
+    if (character && messages.length === 0) {
+      const description = t(`Characters.${character.id}.description`)
+      setMessages([
+        { 
+          id: 'm0', 
+          role: 'assistant', 
+          content: `Hello! I'm ${character.name} ${character.avatar} ${description}. How can I help you?` 
+        }
+      ])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [character?.id, t])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const listRef = useRef<HTMLDivElement>(null)
@@ -73,7 +83,7 @@ export default function ChatPage() {
       const errMsg: Message = { 
         id: crypto.randomUUID(), 
         role: 'assistant', 
-        content: error instanceof Error ? `Hata: ${error.message}` : 'Bir şeyler ters gitti. Tekrar dener misin?' 
+        content: error instanceof Error ? t('ChatPage.error', { message: error.message }) : t('ChatPage.somethingWentWrong') 
       }
       setMessages((m) => [...m, errMsg])
     } finally {
@@ -84,7 +94,7 @@ export default function ChatPage() {
   if (!character) {
     return (
       <div className="flex h-[calc(100vh-4rem)] flex-col items-center justify-center px-4">
-        <p className="text-white/70">Karakter bulunamadı</p>
+        <p className="text-white/70">{t('ChatPage.characterNotFound')}</p>
       </div>
     )
   }
@@ -96,7 +106,7 @@ export default function ChatPage() {
           <span className="text-2xl">{character.avatar}</span>
           <div>
             <h3 className="font-semibold">{character.name}</h3>
-            <p className="text-xs text-white/60">{character.description}</p>
+            <p className="text-xs text-white/60">{t(`Characters.${character.id}.description`)}</p>
           </div>
         </div>
       </div>
@@ -129,7 +139,7 @@ export default function ChatPage() {
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Mesaj yaz..."
+            placeholder={t('ChatPage.typeMessage')}
             className="flex-1 rounded-md border border-white/10 bg-transparent px-3 py-2 text-sm outline-none focus:border-brand"
           />
           <button
@@ -137,7 +147,7 @@ export default function ChatPage() {
             className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-brand-foreground disabled:opacity-50"
             disabled={!input.trim() || isLoading}
           >
-            {isLoading ? 'Gönderiliyor...' : 'Gönder'}
+            {isLoading ? t('ChatPage.sending') : t('ChatPage.send')}
           </button>
         </div>
       </form>

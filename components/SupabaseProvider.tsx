@@ -2,6 +2,7 @@
 import { Session, User } from '@supabase/supabase-js'
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react'
 import { getSupabaseBrowser } from '@/lib/supabase'
+import { useTranslation } from '@/lib/useTranslation'
 
 const AuthContext = createContext<{
   session: Session | null
@@ -14,6 +15,7 @@ export function SupabaseProvider({ children }: PropsWithChildren<{}>) {
   const [session, setSession] = useState<Session | null>(null)
   const user = session?.user ?? null
   const supabase = getSupabaseBrowser()
+  const { t } = useTranslation()
 
   useEffect(() => {
     // Check for OAuth callback in URL hash
@@ -22,7 +24,7 @@ export function SupabaseProvider({ children }: PropsWithChildren<{}>) {
     const errorDescription = hashParams.get('error_description')
     
     if (error) {
-      alert(`Giriş hatası: ${errorDescription || error}`)
+      alert(t('Auth.signInError', { message: errorDescription || error }))
       window.history.replaceState(null, '', window.location.pathname)
     }
     
@@ -61,10 +63,10 @@ export function SupabaseProvider({ children }: PropsWithChildren<{}>) {
       })
       
       if (error) {
-        alert(`Giriş hatası: ${error.message}`)
+        alert(t('Auth.signInError', { message: error.message }))
       }
     } catch {
-      alert('Giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.')
+      alert(t('Auth.signInErrorOccurred'))
     }
   }
   async function signOut() {

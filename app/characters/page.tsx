@@ -4,11 +4,13 @@ import Link from 'next/link'
 import { BottomNav } from '@/components/BottomNav'
 import { motion } from 'framer-motion'
 import { characters } from '@/lib/characters'
+import { useTranslation } from '@/lib/useTranslation'
 
 export default function CharactersPage() {
+  const { t } = useTranslation()
   return (
     <div className="px-4 py-6">
-      <h2 className="mb-6 text-xl font-semibold">Karakterleri Seç</h2>
+      <h2 className="mb-6 text-xl font-semibold">{t('CharactersPage.title')}</h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {characters.map((char, idx) => (
           <motion.div
@@ -25,10 +27,10 @@ export default function CharactersPage() {
                 <span className="text-3xl">{char.avatar}</span>
                 <div>
                   <h3 className="font-semibold">{char.name}</h3>
-                  <p className="text-xs text-white/60">{char.description}</p>
+                  <p className="text-xs text-white/60">{t(`Characters.${char.id}.description`)}</p>
                 </div>
               </div>
-              <p className="text-xs text-white/70 italic">"{char.conversationStyle}"</p>
+              <p className="text-xs text-white/70 italic">"{t(`Characters.${char.id}.conversationStyle`)}"</p>
             </Link>
           </motion.div>
         ))}

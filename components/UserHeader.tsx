@@ -2,9 +2,11 @@
 import { useSupabaseAuth } from '@/components/SupabaseProvider'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
+import { useTranslation } from '@/lib/useTranslation'
 
 export function UserHeader() {
   const { user, signOut } = useSupabaseAuth()
+  const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   
@@ -58,7 +60,7 @@ export function UserHeader() {
               }}
               className="rounded-md bg-red-500/20 border border-red-500/30 px-3 py-1.5 text-sm text-red-400 hover:bg-red-500/30 transition-colors shadow-lg"
             >
-              Çıkış Yap
+              {t('UserHeader.signOut')}
             </motion.button>
           )}
         </AnimatePresence>

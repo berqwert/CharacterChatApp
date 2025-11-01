@@ -1,0 +1,62 @@
+{
+  "HomePage": {
+    "title": "Character Chat App",
+    "subtitle": "Simple starter version",
+    "signedIn": "Signed in: {email}",
+    "signInWithGoogle": "Sign in with Google",
+    "startChatting": "Start Chatting",
+    "signedInMessage": "Successfully signed in! You can start chatting now.",
+    "needSignIn": "You need to sign in with Google first."
+  },
+  "ChatPage": {
+    "characterNotFound": "Character not found",
+    "typeMessage": "Type a message...",
+    "send": "Send",
+    "sending": "Sending...",
+    "error": "Error: {message}",
+    "somethingWentWrong": "Something went wrong. Please try again."
+  },
+  "ChatListPage": {
+    "title": "Chats"
+  },
+  "CharactersPage": {
+    "title": "Choose a Character"
+  },
+  "BottomNav": {
+    "chats": "Chats",
+    "characters": "Characters"
+  },
+  "UserHeader": {
+    "signOut": "Sign Out"
+  },
+  "Auth": {
+    "signInError": "Sign-in error: {message}",
+    "signInErrorOccurred": "An error occurred while signing in. Please try again."
+  },
+  "LanguageSwitcher": {
+    "switchLanguage": "Switch Language"
+  },
+  "Characters": {
+    "pirl": {
+      "description": "Fun and playful! Sees everything as a game, happy and cheerful.",
+      "conversationStyle": "Childish, excited, uses emojis, gives short and cheerful answers."
+    },
+    "ozkan": {
+      "description": "Professional and serious. Business-focused, uses formal tone, pays attention to details.",
+      "conversationStyle": "Serious, professional, structured answers. Formal language."
+    },
+    "deniz": {
+      "description": "Creative and artistic. Offers colorful thoughts and creative ideas.",
+      "conversationStyle": "Creative, metaphorical, colorful narratives. Inspiring."
+    },
+    "arda": {
+      "description": "Technical and logical. Focused on code, technology, problem solving.",
+      "conversationStyle": "Technical, logical, provides code examples. Short and clear."
+    },
+    "elif": {
+      "description": "Gentle and supportive. Helps with inner journey and personal growth topics.",
+      "conversationStyle": "Gentle, understanding, supportive. Personal growth focused."
+    }
+  }
+}
+

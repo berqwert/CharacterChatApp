@@ -122,23 +122,12 @@ export default function ChatPage() {
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col">
       <div className="border-b border-white/10 bg-black/40 px-4 py-3 backdrop-blur">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">{character.avatar}</span>
-            <div>
-              <h3 className="font-semibold">{character.name}</h3>
-              <p className="text-xs text-white/60">{t(`Characters.${character.id}.description`)}</p>
-            </div>
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">{character.avatar}</span>
+          <div>
+            <h3 className="font-semibold">{character.name}</h3>
+            <p className="text-xs text-white/60">{t(`Characters.${character.id}.description`)}</p>
           </div>
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={resetChat}
-            title={t('ChatPage.resetChatTooltip')}
-            className="rounded-md bg-white/10 px-3 py-1.5 text-xs font-medium text-white/80 hover:bg-white/20 transition-colors flex items-center gap-1.5"
-          >
-            <span>↻</span>
-            <span className="hidden sm:inline">{t('ChatPage.resetChat')}</span>
-          </motion.button>
         </div>
       </div>
       <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-4 py-4">
@@ -167,6 +156,16 @@ export default function ChatPage() {
 
       <form onSubmit={onSend} className="sticky bottom-16 z-10 w-full bg-black/60 px-4 py-3 backdrop-blur">
         <div className="mx-auto flex max-w-2xl items-center gap-2">
+          <motion.button
+            type="button"
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.05 }}
+            onClick={resetChat}
+            className="rounded-md bg-white/10 px-2.5 py-2 text-white/70 hover:bg-white/20 hover:text-white transition-all flex-shrink-0 flex items-center gap-1.5"
+          >
+            <span className="text-base leading-none">↻</span>
+            <span className="text-xs font-medium leading-tight">{t('ChatPage.resetChat')}</span>
+          </motion.button>
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}

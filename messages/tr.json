@@ -14,7 +14,10 @@
     "send": "Gönder",
     "sending": "Gönderiliyor...",
     "error": "Hata: {message}",
-    "somethingWentWrong": "Bir şeyler ters gitti. Tekrar dener misin?"
+    "somethingWentWrong": "Bir şeyler ters gitti. Tekrar dener misin?",
+    "resetChat": "Sohbeti Sıfırla",
+    "resetChatTooltip": "Yeni bir konuşma başlat",
+    "welcomeMessage": "Merhaba! Ben {name} {avatar} {description}. Nasıl yardımcı olabilirim?"
   },
   "ChatListPage": {
     "title": "Sohbetler"

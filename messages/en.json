@@ -14,7 +14,10 @@
     "send": "Send",
     "sending": "Sending...",
     "error": "Error: {message}",
-    "somethingWentWrong": "Something went wrong. Please try again."
+    "somethingWentWrong": "Something went wrong. Please try again.",
+    "resetChat": "Reset Chat",
+    "resetChatTooltip": "Start a new conversation",
+    "welcomeMessage": "Hello! I'm {name} {avatar} {description}. How can I help you?"
   },
   "ChatListPage": {
     "title": "Chats"

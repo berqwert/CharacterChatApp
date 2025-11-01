@@ -26,6 +26,7 @@
     "title": "Karakterleri Seç"
   },
   "BottomNav": {
+    "home": "Ana Sayfa",
     "chats": "Sohbetler",
     "characters": "Karakterler"
   },
@@ -38,6 +39,10 @@
   },
   "LanguageSwitcher": {
     "switchLanguage": "Dili Değiştir"
+  },
+  "Navigation": {
+    "goHome": "Ana Sayfa",
+    "backToHome": "Ana Sayfaya Dön"
   },
   "Characters": {
     "pirl": {

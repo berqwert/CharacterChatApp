@@ -8,6 +8,7 @@ import { useTranslation } from '@/lib/useTranslation'
 
 export default function ChatListPage() {
   const { t } = useTranslation()
+  
   return (
     <div className="px-4 py-6">
       <h2 className="mb-4 text-xl font-semibold">{t('ChatListPage.title')}</h2>

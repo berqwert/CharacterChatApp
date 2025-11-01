@@ -26,6 +26,7 @@
     "title": "Choose a Character"
   },
   "BottomNav": {
+    "home": "Home",
     "chats": "Chats",
     "characters": "Characters"
   },
@@ -38,6 +39,10 @@
   },
   "LanguageSwitcher": {
     "switchLanguage": "Switch Language"
+  },
+  "Navigation": {
+    "goHome": "Home",
+    "backToHome": "Back to Home"
   },
   "Characters": {
     "pirl": {

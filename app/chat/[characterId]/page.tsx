@@ -1,10 +1,11 @@
 "use client"
 
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getCharacterById } from '@/lib/characters'
 import { useTranslation } from '@/lib/useTranslation'
+import { BottomNav } from '@/components/BottomNav'
 
 type Message = { id: string; role: 'user' | 'assistant'; content: string }
 
@@ -12,6 +13,7 @@ export default function ChatPage() {
   const { characterId } = useParams<{ characterId: string }>()
   const character = getCharacterById(characterId || '')
   const { t } = useTranslation()
+  const router = useRouter()
   
   const storageKey = character ? `chat-${character.id}` : null
 
@@ -174,12 +176,24 @@ export default function ChatPage() {
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col">
       <div className="border-b border-white/10 bg-black/40 px-4 py-3 backdrop-blur">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">{character.avatar}</span>
-          <div>
-            <h3 className="font-semibold">{character.name}</h3>
-            <p className="text-xs text-white/60">{t(`Characters.${character.id}.description`)}</p>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <span className="text-2xl flex-shrink-0">{character.avatar}</span>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold truncate">{character.name}</h3>
+              <p className="text-xs text-white/60 hidden sm:block truncate">{t(`Characters.${character.id}.description`)}</p>
+            </div>
           </div>
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.05 }}
+            onClick={() => router.push('/')}
+            className="rounded-md bg-white/10 px-2.5 py-2 text-white/80 hover:bg-white/20 hover:text-white transition-colors flex items-center justify-center flex-shrink-0 min-w-[36px]"
+            title={t('Navigation.backToHome')}
+          >
+            <span className="text-base">🏠</span>
+            <span className="hidden sm:inline text-xs font-medium ml-1.5">{t('Navigation.goHome')}</span>
+          </motion.button>
         </div>
       </div>
       <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-4 py-4">
@@ -233,6 +247,7 @@ export default function ChatPage() {
           </button>
         </div>
       </form>
+      <BottomNav />
     </div>
   )
 }

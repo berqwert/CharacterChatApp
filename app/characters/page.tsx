@@ -8,6 +8,7 @@ import { useTranslation } from '@/lib/useTranslation'
 
 export default function CharactersPage() {
   const { t } = useTranslation()
+  
   return (
     <div className="px-4 py-6">
       <h2 className="mb-6 text-xl font-semibold">{t('CharactersPage.title')}</h2>

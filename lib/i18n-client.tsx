@@ -11,9 +11,9 @@ const LocaleContext = createContext<{
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(() => {
-    if (typeof window === 'undefined') return 'en'
+    if (typeof window === 'undefined') return 'tr'
     const stored = localStorage.getItem('locale') as Locale | null
-    return stored && ['en', 'tr'].includes(stored) ? stored : 'en'
+    return stored && ['en', 'tr'].includes(stored) ? stored : 'tr'
   })
 
   useEffect(() => {

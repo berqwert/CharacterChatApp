@@ -4,11 +4,13 @@ import Link from 'next/link'
 import { BottomNav } from '@/components/BottomNav'
 import { characters } from '@/lib/characters'
 import { motion } from 'framer-motion'
+import { useTranslation } from '@/lib/useTranslation'
 
 export default function ChatListPage() {
+  const { t } = useTranslation()
   return (
     <div className="px-4 py-6">
-      <h2 className="mb-4 text-xl font-semibold">Sohbetler</h2>
+      <h2 className="mb-4 text-xl font-semibold">{t('ChatListPage.title')}</h2>
       <ul className="space-y-2">
         {characters.map((char, idx) => (
           <motion.li
@@ -24,7 +26,7 @@ export default function ChatListPage() {
               <span className="text-2xl">{char.avatar}</span>
               <div>
                 <div className="font-medium">{char.name}</div>
-                <div className="text-xs text-white/60">{char.description}</div>
+                <div className="text-xs text-white/60">{t(`Characters.${char.id}.description`)}</div>
               </div>
             </Link>
           </motion.li>

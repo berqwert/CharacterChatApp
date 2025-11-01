@@ -5,9 +5,11 @@ import { BottomNav } from '@/components/BottomNav'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSupabaseAuth } from '@/components/SupabaseProvider'
 import { useState, useEffect } from 'react'
+import { useTranslation } from '@/lib/useTranslation'
 
 export default function HomePage() {
   const { user, signInWithGoogle } = useSupabaseAuth()
+  const { t } = useTranslation()
   const [showNotification, setShowNotification] = useState(false)
 
   useEffect(() => {
@@ -15,7 +17,7 @@ export default function HomePage() {
       setShowNotification(true)
       const timer = setTimeout(() => {
         setShowNotification(false)
-      }, 4000) // 4 saniye sonra kaybolur
+      }, 4000)
       return () => clearTimeout(timer)
     }
   }, [user])
@@ -23,8 +25,8 @@ export default function HomePage() {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-8 px-4 text-center">
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}>
-        <h1 className="text-3xl font-semibold">Character Chat App</h1>
-        <p className="mt-2 text-white/70">Basit başlangıç sürümü</p>
+        <h1 className="text-3xl font-semibold">{t('HomePage.title')}</h1>
+        <p className="mt-2 text-white/70">{t('HomePage.subtitle')}</p>
         <AnimatePresence>
           {showNotification && user && (
             <motion.div
@@ -34,7 +36,7 @@ export default function HomePage() {
               transition={{ duration: 0.2 }}
               className="mt-3 text-xs text-green-400"
             >
-              ✓ Giriş yapıldı: {user.email}
+              ✓ {t('HomePage.signedIn', { email: user.email || '' })}
             </motion.div>
           )}
         </AnimatePresence>
@@ -51,24 +53,22 @@ export default function HomePage() {
             onClick={signInWithGoogle}
             className="rounded-md bg-white/20 px-4 py-2 text-sm font-medium text-white hover:opacity-80 mb-2 shadow"
           >
-            Google ile Giriş Yap
+            {t('HomePage.signInWithGoogle')}
           </button>
         )}
         {user ? (
           <Link href="/chat" className="rounded-md bg-brand px-4 py-3 font-medium text-brand-foreground">
             <motion.span whileTap={{ scale: 0.98 }} whileHover={{ y: -1 }} transition={{ duration: 0.08, ease: 'easeOut' }}>
-              Sohbete Başla
+              {t('HomePage.startChatting')}
             </motion.span>
           </Link>
         ) : (
           <div className="rounded-md bg-brand/50 px-4 py-3 font-medium text-brand-foreground opacity-50 cursor-not-allowed">
-            Sohbete Başla
+            {t('HomePage.startChatting')}
           </div>
         )}
         <p className="text-xs text-white/50">
-          {user
-            ? 'Başarıyla giriş yaptın! Sohbete başlayabilirsin.'
-            : 'Önce Google ile giriş yapmalısın.'}
+          {user ? t('HomePage.signedInMessage') : t('HomePage.needSignIn')}
         </p>
       </motion.div>
 

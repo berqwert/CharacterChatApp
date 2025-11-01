@@ -20,7 +20,11 @@
     "welcomeMessage": "Hello! I'm {name} {avatar} {description}. How can I help you?"
   },
   "ChatListPage": {
-    "title": "Chats"
+    "title": "Chats",
+    "loading": "Loading...",
+    "noChatsTitle": "No chats yet",
+    "noChatsDescription": "Start a conversation with a character to see your chats here.",
+    "browseCharacters": "Browse Characters"
   },
   "CharactersPage": {
     "title": "Choose a Character"

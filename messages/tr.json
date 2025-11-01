@@ -20,7 +20,11 @@
     "welcomeMessage": "Merhaba! Ben {name} {avatar} {description}. Nasıl yardımcı olabilirim?"
   },
   "ChatListPage": {
-    "title": "Sohbetler"
+    "title": "Sohbetler",
+    "loading": "Yükleniyor...",
+    "noChatsTitle": "Henüz sohbet yok",
+    "noChatsDescription": "Bir karakterle konuşmaya başladığında sohbetlerin burada görünecek.",
+    "browseCharacters": "Karakterleri Keşfet"
   },
   "CharactersPage": {
     "title": "Karakterleri Seç"

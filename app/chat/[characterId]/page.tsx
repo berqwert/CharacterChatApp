@@ -18,14 +18,23 @@ export default function ChatPage() {
     return []
   })
 
+  function getWelcomeMessage() {
+    if (!character) return ''
+    const description = t(`Characters.${character.id}.description`)
+    return t('ChatPage.welcomeMessage', {
+      name: character.name,
+      avatar: character.avatar,
+      description: description
+    })
+  }
+
   useEffect(() => {
     if (character && messages.length === 0) {
-      const description = t(`Characters.${character.id}.description`)
       setMessages([
         { 
           id: 'm0', 
           role: 'assistant', 
-          content: `Hello! I'm ${character.name} ${character.avatar} ${description}. How can I help you?` 
+          content: getWelcomeMessage()
         }
       ])
     }
@@ -38,6 +47,17 @@ export default function ChatPage() {
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
   }, [messages])
+
+  function resetChat() {
+    if (!character) return
+    setMessages([
+      { 
+        id: 'm0', 
+        role: 'assistant', 
+        content: getWelcomeMessage()
+      }
+    ])
+  }
 
   async function onSend(e: React.FormEvent) {
     e.preventDefault()
@@ -102,12 +122,23 @@ export default function ChatPage() {
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col">
       <div className="border-b border-white/10 bg-black/40 px-4 py-3 backdrop-blur">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">{character.avatar}</span>
-          <div>
-            <h3 className="font-semibold">{character.name}</h3>
-            <p className="text-xs text-white/60">{t(`Characters.${character.id}.description`)}</p>
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">{character.avatar}</span>
+            <div>
+              <h3 className="font-semibold">{character.name}</h3>
+              <p className="text-xs text-white/60">{t(`Characters.${character.id}.description`)}</p>
+            </div>
           </div>
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={resetChat}
+            title={t('ChatPage.resetChatTooltip')}
+            className="rounded-md bg-white/10 px-3 py-1.5 text-xs font-medium text-white/80 hover:bg-white/20 transition-colors flex items-center gap-1.5"
+          >
+            <span>↻</span>
+            <span className="hidden sm:inline">{t('ChatPage.resetChat')}</span>
+          </motion.button>
         </div>
       </div>
       <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-4 py-4">

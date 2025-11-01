@@ -3,14 +3,24 @@
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { getCharacterById } from '@/lib/characters'
 
 type Message = { id: string; role: 'user' | 'assistant'; content: string }
 
 export default function ChatPage() {
   const { characterId } = useParams<{ characterId: string }>()
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 'm0', role: 'assistant', content: `Ben ${characterId}. Sohbete hazır mısın?` },
-  ])
+  const character = getCharacterById(characterId || '')
+  
+  const [messages, setMessages] = useState<Message[]>(() => {
+    if (!character) return []
+    return [
+      { 
+        id: 'm0', 
+        role: 'assistant', 
+        content: `Merhaba! Ben ${character.name} ${character.avatar} ${character.description}. Nasıl yardımcı olabilirim?` 
+      }
+    ]
+  })
   const [input, setInput] = useState('')
   const listRef = useRef<HTMLDivElement>(null)
 
@@ -26,12 +36,18 @@ export default function ChatPage() {
     setMessages((m) => [...m, user])
     setInput('')
 
+    if (!character) return
+    
     // Call minimal API stub (could be replaced with Groq streaming later)
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ characterId, history: [...messages, user] }),
+        body: JSON.stringify({ 
+          characterId, 
+          systemPrompt: character.systemPrompt,
+          history: [...messages, user] 
+        }),
       })
       const data = await res.json()
       const bot: Message = { id: crypto.randomUUID(), role: 'assistant', content: data.reply }
@@ -42,8 +58,25 @@ export default function ChatPage() {
     }
   }
 
+  if (!character) {
+    return (
+      <div className="flex h-[calc(100vh-4rem)] flex-col items-center justify-center px-4">
+        <p className="text-white/70">Karakter bulunamadı</p>
+      </div>
+    )
+  }
+
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col">
+      <div className="border-b border-white/10 bg-black/40 px-4 py-3 backdrop-blur">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">{character.avatar}</span>
+          <div>
+            <h3 className="font-semibold">{character.name}</h3>
+            <p className="text-xs text-white/60">{character.description}</p>
+          </div>
+        </div>
+      </div>
       <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-4 py-4">
         <AnimatePresence initial={false}>
           {messages.map((m) => (

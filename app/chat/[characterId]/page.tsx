@@ -22,6 +22,7 @@ export default function ChatPage() {
     ]
   })
   const [input, setInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const listRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -30,13 +31,17 @@ export default function ChatPage() {
 
   async function onSend(e: React.FormEvent) {
     e.preventDefault()
-    if (!input.trim()) return
+    if (!input.trim() || isLoading) return
 
     const user: Message = { id: crypto.randomUUID(), role: 'user', content: input.trim() }
     setMessages((m) => [...m, user])
     setInput('')
+    setIsLoading(true)
 
-    if (!character) return
+    if (!character) {
+      setIsLoading(false)
+      return
+    }
     
     // Call minimal API stub (could be replaced with Groq streaming later)
     try {
@@ -49,12 +54,30 @@ export default function ChatPage() {
           history: [...messages, user] 
         }),
       })
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}))
+        throw new Error(errorData.error || `HTTP ${res.status}`)
+      }
+
       const data = await res.json()
+      
+      if (!data.reply || typeof data.reply !== 'string') {
+        throw new Error('Invalid response format')
+      }
+
       const bot: Message = { id: crypto.randomUUID(), role: 'assistant', content: data.reply }
       setMessages((m) => [...m, bot])
-    } catch {
-      const errMsg: Message = { id: crypto.randomUUID(), role: 'assistant', content: 'Bir şeyler ters gitti. Tekrar dener misin?' }
+    } catch (error) {
+      console.error('Chat error:', error)
+      const errMsg: Message = { 
+        id: crypto.randomUUID(), 
+        role: 'assistant', 
+        content: error instanceof Error ? `Hata: ${error.message}` : 'Bir şeyler ters gitti. Tekrar dener misin?' 
+      }
       setMessages((m) => [...m, errMsg])
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -112,9 +135,9 @@ export default function ChatPage() {
           <button
             type="submit"
             className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-brand-foreground disabled:opacity-50"
-            disabled={!input.trim()}
+            disabled={!input.trim() || isLoading}
           >
-            Gönder
+            {isLoading ? 'Gönderiliyor...' : 'Gönder'}
           </button>
         </div>
       </form>

@@ -24,6 +24,26 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    const MAX_MESSAGE_LENGTH = 2000
+    if (Array.isArray(history)) {
+      const lastUserMessage = [...history].reverse().find((m) => m.role === 'user')
+      if (lastUserMessage?.content) {
+        const messageContent = String(lastUserMessage.content).trim()
+        if (messageContent.length === 0) {
+          return new Response(
+            JSON.stringify({ error: 'Message cannot be empty' }),
+            { status: 400, headers: { 'Content-Type': 'application/json' } }
+          )
+        }
+        if (messageContent.length > MAX_MESSAGE_LENGTH) {
+          return new Response(
+            JSON.stringify({ error: `Message too long. Maximum ${MAX_MESSAGE_LENGTH} characters allowed.` }),
+            { status: 400, headers: { 'Content-Type': 'application/json' } }
+          )
+        }
+      }
+    }
+
     const groqApiKey = process.env.GROQ_API_KEY
 
     // If no Groq API key, use stub mode

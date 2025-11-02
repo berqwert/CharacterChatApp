@@ -87,7 +87,10 @@ export default function ChatPage() {
   }, [character?.id, t])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [inputError, setInputError] = useState<string | null>(null)
   const listRef = useRef<HTMLDivElement>(null)
+  
+  const MAX_MESSAGE_LENGTH = 2000
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
@@ -113,11 +116,31 @@ export default function ChatPage() {
     ])
   }
 
+  function validateInput(text: string): string | null {
+    const trimmed = text.trim()
+    if (trimmed.length === 0) {
+      return t('ChatPage.messageTooShort')
+    }
+    if (trimmed.length > MAX_MESSAGE_LENGTH) {
+      return t('ChatPage.messageTooLong', { max: MAX_MESSAGE_LENGTH })
+    }
+    return null
+  }
+
   async function onSend(e: React.FormEvent) {
     e.preventDefault()
-    if (!input.trim() || isLoading) return
+    
+    const validationError = validateInput(input)
+    if (validationError) {
+      setInputError(validationError)
+      setTimeout(() => setInputError(null), 3000)
+      return
+    }
+    
+    if (isLoading) return
 
     const user: Message = { id: crypto.randomUUID(), role: 'user', content: input.trim() }
+    setInputError(null)
     setMessages((m) => [...m, user])
     setInput('')
     setIsLoading(true)
@@ -232,16 +255,42 @@ export default function ChatPage() {
             <span className="text-base leading-none">↻</span>
             <span className="text-xs font-medium leading-tight">{t('ChatPage.resetChat')}</span>
           </motion.button>
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={t('ChatPage.typeMessage')}
-            className="flex-1 rounded-md border border-white/10 bg-transparent px-3 py-2 text-sm outline-none focus:border-brand"
-          />
+          <div className="flex-1 flex flex-col">
+            <input
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value)
+                setInputError(null) // Clear error when user types
+              }}
+              placeholder={t('ChatPage.typeMessage')}
+              maxLength={MAX_MESSAGE_LENGTH}
+              className={`rounded-md border bg-transparent px-3 py-2 text-sm outline-none transition-colors ${
+                inputError 
+                  ? 'border-red-500/50 focus:border-red-500' 
+                  : 'border-white/10 focus:border-brand'
+              }`}
+            />
+            <div className="flex items-center justify-between mt-1 px-1">
+              {inputError && (
+                <span className="text-xs text-red-400">{inputError}</span>
+              )}
+              <span className={`text-xs ml-auto ${
+                input.length > MAX_MESSAGE_LENGTH * 0.9 
+                  ? 'text-yellow-400' 
+                  : input.length > MAX_MESSAGE_LENGTH * 0.95
+                  ? 'text-red-400'
+                  : 'text-white/40'
+              }`}>
+                {input.length > 0 && (
+                  t('ChatPage.charactersRemaining', { remaining: Math.max(0, MAX_MESSAGE_LENGTH - input.length) })
+                )}
+              </span>
+            </div>
+          </div>
           <button
             type="submit"
             className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-brand-foreground disabled:opacity-50"
-            disabled={!input.trim() || isLoading}
+            disabled={!input.trim() || isLoading || input.trim().length > MAX_MESSAGE_LENGTH}
           >
             {isLoading ? t('ChatPage.sending') : t('ChatPage.send')}
           </button>

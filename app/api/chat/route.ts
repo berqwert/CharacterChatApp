@@ -1,25 +1,34 @@
 import { NextRequest } from 'next/server'
 import Groq from 'groq-sdk'
+import type { ChatRequest, ChatResponse, ChatErrorResponse } from '@/lib/types'
 
 export async function POST(req: NextRequest) {
-  // Parse body once at the beginning
-  let body: any = {}
+  let body: ChatRequest | null = null
   try {
-    body = await req.json()
+    body = await req.json() as ChatRequest
   } catch {
+    const errorResponse: ChatErrorResponse = { error: 'Invalid request body' }
     return new Response(
-      JSON.stringify({ error: 'Invalid request body' }),
+      JSON.stringify(errorResponse),
       { status: 400, headers: { 'Content-Type': 'application/json' } }
     )
   }
 
   try {
-    const { characterId, systemPrompt, history } = body ?? {}
-
-    // Validation
-    if (!characterId || !systemPrompt) {
+    if (!body) {
+      const errorResponse: ChatErrorResponse = { error: 'Request body is required' }
       return new Response(
-        JSON.stringify({ error: 'Missing required fields: characterId, systemPrompt' }),
+        JSON.stringify(errorResponse),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
+    const { characterId, systemPrompt, history } = body
+
+    if (!characterId || !systemPrompt) {
+      const errorResponse: ChatErrorResponse = { error: 'Missing required fields: characterId, systemPrompt' }
+      return new Response(
+        JSON.stringify(errorResponse),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       )
     }
@@ -30,14 +39,16 @@ export async function POST(req: NextRequest) {
       if (lastUserMessage?.content) {
         const messageContent = String(lastUserMessage.content).trim()
         if (messageContent.length === 0) {
+          const errorResponse: ChatErrorResponse = { error: 'Message cannot be empty' }
           return new Response(
-            JSON.stringify({ error: 'Message cannot be empty' }),
+            JSON.stringify(errorResponse),
             { status: 400, headers: { 'Content-Type': 'application/json' } }
           )
         }
         if (messageContent.length > MAX_MESSAGE_LENGTH) {
+          const errorResponse: ChatErrorResponse = { error: `Message too long. Maximum ${MAX_MESSAGE_LENGTH} characters allowed.` }
           return new Response(
-            JSON.stringify({ error: `Message too long. Maximum ${MAX_MESSAGE_LENGTH} characters allowed.` }),
+            JSON.stringify(errorResponse),
             { status: 400, headers: { 'Content-Type': 'application/json' } }
           )
         }
@@ -57,7 +68,8 @@ export async function POST(req: NextRequest) {
         ? `I'm thinking about ${lastUser.slice(0, 80)}... Interesting topic!`
         : `Hello! How can I help you?`
 
-      return new Response(JSON.stringify({ reply }), {
+      const response: ChatResponse = { reply }
+      return new Response(JSON.stringify(response), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       })
@@ -104,7 +116,8 @@ export async function POST(req: NextRequest) {
       console.warn('Groq API returned empty or invalid response')
     }
 
-    return new Response(JSON.stringify({ reply }), {
+    const response: ChatResponse = { reply }
+    return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     })
@@ -123,38 +136,40 @@ export async function POST(req: NextRequest) {
     
     // If it's an invalid API key error from Groq
     if (errorCode === 'invalid_api_key' || errorMessage?.includes('Invalid API Key') || errorMessage?.includes('invalid_api_key')) {
+      const errorResponse: ChatErrorResponse = {
+        error: 'Invalid API key. Please check your GROQ_API_KEY in .env.local',
+        reply: '🔑 API Key hatası: Lütfen .env.local dosyasındaki GROQ_API_KEY değerini kontrol edin. Groq Console\'dan yeni bir API key almanız gerekebilir: https://console.groq.com/keys'
+      }
       return new Response(
-        JSON.stringify({ 
-          error: 'Invalid API key. Please check your GROQ_API_KEY in .env.local',
-          reply: '🔑 API Key hatası: Lütfen .env.local dosyasındaki GROQ_API_KEY değerini kontrol edin. Groq Console\'dan yeni bir API key almanız gerekebilir: https://console.groq.com/keys'
-        }),
+        JSON.stringify(errorResponse),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       )
     }
     
     // If it's any other Groq API error
     if (errorMessage?.includes('API') || errorMessage?.includes('authentication') || errorMessage?.includes('401')) {
+      const errorResponse: ChatErrorResponse = {
+        error: errorMessage || 'Groq API error',
+        reply: `❌ API Hatası: ${errorMessage || 'Bilinmeyen bir hata oluştu. Lütfen API key\'inizi kontrol edin.'}`
+      }
       return new Response(
-        JSON.stringify({ 
-          error: errorMessage || 'Groq API error',
-          reply: `❌ API Hatası: ${errorMessage || 'Bilinmeyen bir hata oluştu. Lütfen API key\'inizi kontrol edin.'}`
-        }),
+        JSON.stringify(errorResponse),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       )
     }
     
     // If Groq API fails for other reasons, fallback to stub mode
     console.warn('Groq API failed, using fallback response')
-    const { history } = body ?? {}
-    const lastUser = Array.isArray(history)
-      ? [...history].reverse().find((m) => m.role === 'user')?.content
+    const lastUser = body && Array.isArray(body.history)
+      ? [...body.history].reverse().find((m) => m.role === 'user')?.content
       : undefined
 
     const fallbackReply = lastUser
       ? `⚠️ API bağlantı hatası: "${lastUser.slice(0, 50)}..." konusu hakkında düşünüyorum. Lütfen API key\'inizi kontrol edin.`
       : `⚠️ API bağlantı hatası. Lütfen server loglarını kontrol edin.`
 
-    return new Response(JSON.stringify({ reply: fallbackReply }), {
+    const response: ChatResponse = { reply: fallbackReply }
+    return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     })

@@ -334,13 +334,13 @@ export default function ChatPage() {
       </div>
 
       <form onSubmit={onSend} className="sticky bottom-16 z-10 w-full bg-black/60 px-4 py-3 backdrop-blur">
-        <div className="mx-auto flex max-w-2xl items-center gap-2">
+        <div className="mx-auto flex max-w-2xl items-start gap-2">
           <motion.button
             type="button"
             whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.05 }}
             onClick={resetChat}
-            className="rounded-md bg-white/10 px-2.5 py-2 text-white/70 hover:bg-white/20 hover:text-white transition-all flex-shrink-0 flex items-center gap-1.5"
+            className="rounded-md bg-white/10 px-2.5 py-2 text-white/70 hover:bg-white/20 hover:text-white transition-all flex-shrink-0 flex items-center gap-1.5 self-start mt-0"
           >
             <span className="text-base leading-none">↻</span>
             <span className="text-xs font-medium leading-tight">{t('ChatPage.resetChat')}</span>
@@ -360,7 +360,7 @@ export default function ChatPage() {
                   : 'border-white/10 focus:border-brand'
               }`}
             />
-            <div className="flex items-center justify-between mt-1 px-1">
+            <div className="flex items-center justify-between mt-1 px-1 min-h-[16px]">
               {inputError && (
                 <span className="text-xs text-red-400">{inputError}</span>
               )}
@@ -379,7 +379,7 @@ export default function ChatPage() {
           </div>
           <button
             type="submit"
-            className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-brand-foreground disabled:opacity-50"
+            className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-brand-foreground disabled:opacity-50 self-start mt-0"
             disabled={!input.trim() || isLoading || input.trim().length > MAX_MESSAGE_LENGTH}
           >
             {isLoading ? t('ChatPage.sending') : t('ChatPage.send')}

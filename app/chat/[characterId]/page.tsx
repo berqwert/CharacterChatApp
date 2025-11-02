@@ -188,12 +188,14 @@ export default function ChatPage() {
     }
   }
 
+  useEffect(() => {
+    if (!character) {
+      router.replace('/characters')
+    }
+  }, [character, router])
+
   if (!character) {
-    return (
-      <div className="flex h-[calc(100vh-4rem)] flex-col items-center justify-center px-4">
-        <p className="text-white/70">{t('ChatPage.characterNotFound')}</p>
-      </div>
-    )
+    return null
   }
 
   return (

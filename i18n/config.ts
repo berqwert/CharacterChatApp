@@ -7,12 +7,12 @@ export type Locale = (typeof locales)[number]
 export const defaultLocale: Locale = 'tr'
 
 export default getRequestConfig(async ({ locale }) => {
-  if (!locales.includes(locale as Locale)) {
+  if (!locale || !locales.includes(locale as Locale)) {
     notFound()
   }
 
   return {
-    locale,
+    locale: locale as string,
     messages: (await import(`../../messages/${locale}.json`)).default
   }
 })

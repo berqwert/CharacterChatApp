@@ -20,7 +20,8 @@
     "welcomeMessage": "Hello! I'm {name} {avatar} {description}. How can I help you?",
     "messageTooLong": "Message is too long. Maximum {max} characters allowed.",
     "messageTooShort": "Message cannot be empty.",
-    "charactersRemaining": "{remaining} characters remaining"
+    "charactersRemaining": "{remaining} characters remaining",
+    "pleaseWait": "Please wait {seconds} second(s) before sending another message."
   },
   "ChatListPage": {
     "title": "Chats",

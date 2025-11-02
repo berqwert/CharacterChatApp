@@ -89,8 +89,10 @@ export default function ChatPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [inputError, setInputError] = useState<string | null>(null)
   const listRef = useRef<HTMLDivElement>(null)
+  const lastSendTime = useRef<number>(0)
   
   const MAX_MESSAGE_LENGTH = 2000
+  const MIN_TIME_BETWEEN_MESSAGES = 2000
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
@@ -139,6 +141,15 @@ export default function ChatPage() {
     
     if (isLoading) return
 
+    const timeSinceLastMessage = Date.now() - lastSendTime.current
+    if (timeSinceLastMessage < MIN_TIME_BETWEEN_MESSAGES) {
+      const waitSeconds = Math.ceil((MIN_TIME_BETWEEN_MESSAGES - timeSinceLastMessage) / 1000)
+      setInputError(t('ChatPage.pleaseWait', { seconds: waitSeconds }))
+      setTimeout(() => setInputError(null), 3000)
+      return
+    }
+
+    lastSendTime.current = Date.now()
     const user: Message = { id: crypto.randomUUID(), role: 'user', content: input.trim() }
     setInputError(null)
     setMessages((m) => [...m, user])

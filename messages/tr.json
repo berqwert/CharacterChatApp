@@ -20,7 +20,8 @@
     "welcomeMessage": "Merhaba! Ben {name} {avatar} {description}. Nasıl yardımcı olabilirim?",
     "messageTooLong": "Mesaj çok uzun. Maksimum {max} karakter izin verilir.",
     "messageTooShort": "Mesaj boş olamaz.",
-    "charactersRemaining": "{remaining} karakter kaldı"
+    "charactersRemaining": "{remaining} karakter kaldı",
+    "pleaseWait": "Lütfen başka bir mesaj göndermeden önce {seconds} saniye bekleyin."
   },
   "ChatListPage": {
     "title": "Sohbetler",

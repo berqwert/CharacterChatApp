@@ -23,7 +23,7 @@ export default function HomePage() {
   }, [user])
 
   return (
-    <div className={`flex h-full flex-col items-center justify-center gap-8 px-4 pb-20 text-center ${user ? 'pt-24 sm:pt-16' : 'pt-20 sm:pt-8'}`}>
+    <div className={`flex min-h-[calc(100vh-4rem)] flex-col items-center justify-start gap-8 px-4 pb-20 text-center ${user ? 'pt-24 sm:pt-16' : 'pt-20 sm:pt-12'}`}>
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}>
         <h1 className="text-3xl font-semibold">{t('HomePage.title')}</h1>
         <p className="mt-2 text-white/70">{t('HomePage.subtitle')}</p>

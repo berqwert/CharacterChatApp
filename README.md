@@ -1,6 +1,6 @@
 # CharacterChatApp
 
-Minimal, mobile-first Character.AI tarzı sohbet uygulaması başlangıç projesi. Next.js (app router), Tailwind, Framer Motion ve Supabase istemci yapılandırma iskeleti içerir. LLM entegrasyonu için Groq API anahtarı bekler (şimdilik stub).
+Minimal, mobile-first Character.AI tarzı sohbet uygulaması. Next.js (App Router), Tailwind CSS, Framer Motion ve Supabase ile geliştirilmiştir. Groq API entegrasyonu ile gerçek zamanlı AI sohbeti sağlar.
 
 ## Teknolojiler
 - React + Next.js (App Router)
@@ -29,16 +29,22 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 - `build`: Üretim derlemesi
 - `start`: Üretim sunucusu
 
-## Sayfa Yapısı ve Akış
-- `/` → Karşılama (şimdilik misafir)
-- `/chat` → Sohbet listesi (dummy)
-- `/chat/[characterId]` → Sohbet ekranı (stub API ile bot yanıtı)
+## Sayfa Yapısı
 
-Kullanıcı akışı: Karşılamadan sohbete geç → mesaj gönder → bot yanıtlar → alt menüden sayfalar arası geçiş.
+- `/` → Ana sayfa (giriş yapma ve karakter seçme)
+- `/chat` → Sohbet listesi (aktif konuşmalar)
+- `/chat/[characterId]` → Karakter sohbet ekranı
+- `/characters` → Karakter seçim sayfası
 
-## Notlar
-- Groq entegrasyonu için `app/api/chat/route.ts` içindeki stub, `process.env.GROQ_API_KEY` ile gerçek istek yapacak şekilde güncellenebilir.
-- Supabase kimlik doğrulama ve realtime mesajlar için `lib/supabase.ts` hazır; ilerleyen aşamada provider ve server action eklenebilir.
+## Özellikler
+
+- Google Sign-in ile kimlik doğrulama (Supabase Auth)
+- 5 farklı karakter ile sohbet
+- Groq API ile gerçek zamanlı AI yanıtları
+- Mesaj geçmişi (localStorage)
+- Çoklu dil desteği (Türkçe/İngilizce)
+- Responsive tasarım (mobile-first)
+- Smooth animasyonlar (Framer Motion)
 
 ## Sorun Giderme
 - TypeScript: "Cannot find type definition file for 'node'"

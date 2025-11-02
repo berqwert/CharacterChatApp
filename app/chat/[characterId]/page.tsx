@@ -17,7 +17,6 @@ export default function ChatPage() {
   
   const storageKey = character ? `chat-${character.id}` : null
 
-  // Load messages from localStorage on mount
   const [messages, setMessages] = useState<Message[]>(() => {
     if (!character || !storageKey) return []
     
@@ -33,7 +32,6 @@ export default function ChatPage() {
       console.error('Failed to load messages from localStorage:', error)
     }
     
-    // No stored messages, return welcome message
     return []
   })
 
@@ -47,7 +45,6 @@ export default function ChatPage() {
     })
   }
 
-  // Save messages to localStorage whenever they change
   useEffect(() => {
     if (!storageKey || messages.length === 0) return
     
@@ -58,15 +55,12 @@ export default function ChatPage() {
     }
   }, [messages, storageKey])
 
-  // Initialize with welcome message if no messages exist
-  // Also update welcome message if language changes (first message is welcome message)
   useEffect(() => {
     if (!character) return
     
     const welcomeMsg = getWelcomeMessage()
     
     if (messages.length === 0) {
-      // No messages, add welcome message
       setMessages([
         { 
           id: 'm0', 
@@ -75,7 +69,6 @@ export default function ChatPage() {
         }
       ])
     } else if (messages[0]?.id === 'm0' && messages[0]?.role === 'assistant') {
-      // Update welcome message if language changed
       if (messages[0].content !== welcomeMsg) {
         setMessages(prev => [
           { ...prev[0], content: welcomeMsg },
@@ -101,14 +94,12 @@ export default function ChatPage() {
   function resetChat() {
     if (!character || !storageKey) return
     
-    // Clear localStorage
     try {
       localStorage.removeItem(storageKey)
     } catch (error) {
       console.error('Failed to clear localStorage:', error)
     }
     
-    // Reset to welcome message
     setMessages([
       { 
         id: 'm0', 

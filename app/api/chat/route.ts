@@ -57,7 +57,6 @@ export async function POST(req: NextRequest) {
 
     const groqApiKey = process.env.GROQ_API_KEY
 
-    // If no Groq API key, use stub mode
     if (!groqApiKey) {
       console.warn('GROQ_API_KEY not found, using stub mode')
       const lastUser = Array.isArray(history)
@@ -75,13 +74,10 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // Initialize Groq client
     const groq = new Groq({
       apiKey: groqApiKey,
     })
 
-    // Format messages for Groq API
-    // Convert history messages to Groq format, ensuring system prompt is included
     const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
       {
         role: 'system',
@@ -89,7 +85,6 @@ export async function POST(req: NextRequest) {
       },
     ]
 
-    // Add conversation history (skip system messages from history)
     if (Array.isArray(history)) {
       for (const msg of history) {
         if (msg.role === 'user' || msg.role === 'assistant') {
@@ -101,11 +96,9 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Call Groq API
-    console.log('Calling Groq API with model: llama-3.3-70b-versatile')
     const completion = await groq.chat.completions.create({
       messages: messages as any,
-      model: 'llama-3.3-70b-versatile', // Fast and good model
+      model: 'llama-3.3-70b-versatile',
       temperature: 0.7,
       max_tokens: 1024,
     })
@@ -124,17 +117,14 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('API route error:', error)
     
-    // Check if it's a Groq API error with invalid API key
     const errorMessage = error?.error?.error?.message || error?.message || String(error)
     const errorCode = error?.error?.error?.code || error?.code
     
-    // Log detailed error for debugging
     if (error instanceof Error) {
       console.error('Error message:', error.message)
       console.error('Error stack:', error.stack)
     }
     
-    // If it's an invalid API key error from Groq
     if (errorCode === 'invalid_api_key' || errorMessage?.includes('Invalid API Key') || errorMessage?.includes('invalid_api_key')) {
       const errorResponse: ChatErrorResponse = {
         error: 'Invalid API key. Please check your GROQ_API_KEY in .env.local',
@@ -146,7 +136,6 @@ export async function POST(req: NextRequest) {
       )
     }
     
-    // If it's any other Groq API error
     if (errorMessage?.includes('API') || errorMessage?.includes('authentication') || errorMessage?.includes('401')) {
       const errorResponse: ChatErrorResponse = {
         error: errorMessage || 'Groq API error',
@@ -158,7 +147,6 @@ export async function POST(req: NextRequest) {
       )
     }
     
-    // If Groq API fails for other reasons, fallback to stub mode
     console.warn('Groq API failed, using fallback response')
     const lastUser = body && Array.isArray(body.history)
       ? [...body.history].reverse().find((m) => m.role === 'user')?.content

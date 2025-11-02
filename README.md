@@ -6,13 +6,15 @@ Minimal, mobile-first Character.AI tarzı sohbet uygulaması. Next.js (App Route
 - React + Next.js (App Router)
 - Tailwind CSS
 - Framer Motion (animasyonlar)
-- Radix UI (Avatar primitive — ileride genişletilebilir)
-- Supabase JS (istemci oluşturucu — auth/rt ileride)
+- Supabase (Authentication)
+- Groq API (LLM)
+- next-intl (Internationalization)
 
 ## Kurulum
 ```bash
-cd "/Users/berkeozbek/Desktop/Projects/CharacterChatApp"
-npm i     # veya yarn
+git clone https://github.com/berqwert/CharacterChatApp.git
+cd CharacterChatApp
+npm install
 npm run dev
 ```
 

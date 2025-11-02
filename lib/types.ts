@@ -2,6 +2,8 @@ export type Message = {
   id: string
   role: 'user' | 'assistant' | 'system'
   content: string
+  error?: boolean
+  retryable?: boolean
 }
 
 export type ChatRequest = {

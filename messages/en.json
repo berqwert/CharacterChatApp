@@ -21,7 +21,9 @@
     "messageTooLong": "Message is too long. Maximum {max} characters allowed.",
     "messageTooShort": "Message cannot be empty.",
     "charactersRemaining": "{remaining} characters remaining",
-    "pleaseWait": "Please wait {seconds} second(s) before sending another message."
+    "pleaseWait": "Please wait {seconds} second(s) before sending another message.",
+    "typing": "Typing...",
+    "retry": "Retry"
   },
   "ChatListPage": {
     "title": "Chats",

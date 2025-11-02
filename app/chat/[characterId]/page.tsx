@@ -118,6 +118,58 @@ export default function ChatPage() {
     ])
   }
 
+  async function handleRetry(errorMessageId: string) {
+    const errorIndex = messages.findIndex(m => m.id === errorMessageId)
+    if (errorIndex === -1 || !messages[errorIndex].retryable) return
+
+    const messagesBeforeError = messages.slice(0, errorIndex)
+    const lastUserMessage = messagesBeforeError.reverse().find(m => m.role === 'user')
+    if (!lastUserMessage || !character) return
+
+    setMessages(messagesBeforeError)
+    setIsLoading(true)
+
+    try {
+      const requestBody: ChatRequest = {
+        characterId,
+        systemPrompt: character.systemPrompt,
+        history: messagesBeforeError
+      }
+
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody),
+      })
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({})) as ChatErrorResponse
+        throw new Error(errorData.error || `HTTP ${res.status}`)
+      }
+
+      const data = await res.json() as ChatResponse
+      
+      if (!data.reply || typeof data.reply !== 'string') {
+        throw new Error('Invalid response format')
+      }
+
+      const bot: Message = { id: crypto.randomUUID(), role: 'assistant', content: data.reply }
+      setMessages((m) => [...m, bot])
+    } catch (error) {
+      console.error('Retry error:', error)
+      const errMsg: Message = { 
+        id: crypto.randomUUID(), 
+        role: 'assistant', 
+        content: error instanceof Error ? t('ChatPage.error', { message: error.message }) : t('ChatPage.somethingWentWrong'),
+        error: true,
+        retryable: true
+      }
+      setMessages((m) => [...m, errMsg])
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   function validateInput(text: string): string | null {
     const trimmed = text.trim()
     if (trimmed.length === 0) {
@@ -192,7 +244,9 @@ export default function ChatPage() {
       const errMsg: Message = { 
         id: crypto.randomUUID(), 
         role: 'assistant', 
-        content: error instanceof Error ? t('ChatPage.error', { message: error.message }) : t('ChatPage.somethingWentWrong') 
+        content: error instanceof Error ? t('ChatPage.error', { message: error.message }) : t('ChatPage.somethingWentWrong'),
+        error: true,
+        retryable: true
       }
       setMessages((m) => [...m, errMsg])
     } finally {
@@ -232,16 +286,50 @@ export default function ChatPage() {
               transition={{ duration: 0.18 }}
               className={m.role === 'user' ? 'text-right' : 'text-left'}
             >
-              <span
-                className={
-                  'inline-block max-w-[80%] rounded-lg px-3 py-2 text-sm ' +
-                  (m.role === 'user' ? 'bg-brand text-brand-foreground' : 'bg-white/10')
-                }
-              >
-                {m.content}
-              </span>
+              <div className="inline-flex items-end gap-2 max-w-[80%]">
+                <span
+                  className={
+                    'inline-block rounded-lg px-3 py-2 text-sm ' +
+                    (m.role === 'user' 
+                      ? 'bg-brand text-brand-foreground' 
+                      : m.error 
+                        ? 'bg-red-500/20 text-red-300 border border-red-500/30'
+                        : 'bg-white/10')
+                  }
+                >
+                  {m.content}
+                </span>
+                {m.retryable && (
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => handleRetry(m.id)}
+                    className="rounded-full bg-white/10 p-1.5 hover:bg-white/20 transition-colors flex-shrink-0"
+                    title={t('ChatPage.retry')}
+                  >
+                    <span className="text-sm">↻</span>
+                  </motion.button>
+                )}
+              </div>
             </motion.div>
           ))}
+          {isLoading && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="text-left"
+            >
+              <span className="inline-block max-w-[80%] rounded-lg px-3 py-2 text-sm bg-white/10">
+                <span className="inline-flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse" style={{ animationDelay: '0ms' }}></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse" style={{ animationDelay: '150ms' }}></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse" style={{ animationDelay: '300ms' }}></span>
+                </span>
+                <span className="ml-2 text-white/60 text-xs">{t('ChatPage.typing')}</span>
+              </span>
+            </motion.div>
+          )}
         </AnimatePresence>
       </div>
 

@@ -21,7 +21,9 @@
     "messageTooLong": "Mesaj çok uzun. Maksimum {max} karakter izin verilir.",
     "messageTooShort": "Mesaj boş olamaz.",
     "charactersRemaining": "{remaining} karakter kaldı",
-    "pleaseWait": "Lütfen başka bir mesaj göndermeden önce {seconds} saniye bekleyin."
+    "pleaseWait": "Lütfen başka bir mesaj göndermeden önce {seconds} saniye bekleyin.",
+    "typing": "Yazıyor...",
+    "retry": "Tekrar Dene"
   },
   "ChatListPage": {
     "title": "Sohbetler",

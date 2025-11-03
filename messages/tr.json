@@ -17,7 +17,7 @@
     "somethingWentWrong": "Bir şeyler ters gitti. Tekrar dener misin?",
     "resetChat": "Sohbeti Sıfırla",
     "resetChatTooltip": "Yeni bir konuşma başlat",
-    "welcomeMessage": "Merhaba! Ben {name} {avatar} {description}. Nasıl yardımcı olabilirim?",
+    "welcomeMessage": "Merhaba! Ben {name} {avatar}. Nasıl yardımcı olabilirim?",
     "messageTooLong": "Mesaj çok uzun. Maksimum {max} karakter izin verilir.",
     "messageTooShort": "Mesaj boş olamaz.",
     "charactersRemaining": "{remaining} karakter kaldı",

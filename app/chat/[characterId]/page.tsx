@@ -38,11 +38,9 @@ export default function ChatPage() {
 
   function getWelcomeMessage() {
     if (!character) return ''
-    const description = t(`Characters.${character.id}.description`)
     return t('ChatPage.welcomeMessage', {
       name: character.name,
-      avatar: character.avatar,
-      description: description
+      avatar: character.avatar
     })
   }
 

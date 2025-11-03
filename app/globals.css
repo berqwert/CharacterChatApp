@@ -14,6 +14,7 @@ html, body, #__next {
 body {
   background-color: rgb(var(--bg));
   color: rgb(var(--fg));
+  overflow-x: hidden;
 }
 
 /* Mobile keyboard handling */
@@ -57,5 +58,7 @@ body {
   width: 100%;
   max-width: 560px;
   margin: 0 auto;
+  overflow-x: hidden;
 }
+
 

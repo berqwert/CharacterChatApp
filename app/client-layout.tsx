@@ -14,8 +14,8 @@ export function ClientLayout({ children }: { children: ReactNode }) {
         <LanguageSwitcher />
         <UserHeader />
         <PageFade>
-          <div className="container-safe flex min-h-screen flex-col">
-            <main className="flex-1 pb-16">{children}</main>
+          <div className="container-safe flex min-h-screen flex-col overflow-x-hidden">
+            <main className="flex-1 pb-16 w-full overflow-x-hidden">{children}</main>
           </div>
         </PageFade>
       </SupabaseProvider>

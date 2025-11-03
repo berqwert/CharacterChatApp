@@ -14,6 +14,7 @@ export default function ChatPage() {
   const character = getCharacterById(characterId)
   const { t } = useTranslation()
   const router = useRouter()
+  const [bottomNavHeight, setBottomNavHeight] = useState(64)
   
   const storageKey = character ? `chat-${character.id}` : null
 
@@ -251,6 +252,26 @@ export default function ChatPage() {
     }
   }, [character, router])
 
+  useEffect(() => {
+    const updateBottomNavHeight = () => {
+      const nav = document.querySelector('nav.fixed')
+      if (nav) {
+        const height = nav.getBoundingClientRect().height
+        setBottomNavHeight(height)
+      }
+    }
+    
+    updateBottomNavHeight()
+    window.addEventListener('resize', updateBottomNavHeight)
+    // Re-check after a short delay to ensure nav is rendered
+    const timeout = setTimeout(updateBottomNavHeight, 100)
+    
+    return () => {
+      window.removeEventListener('resize', updateBottomNavHeight)
+      clearTimeout(timeout)
+    }
+  }, [])
+
   if (!character) {
     return null
   }
@@ -324,7 +345,7 @@ export default function ChatPage() {
         </AnimatePresence>
       </div>
 
-      <form onSubmit={onSend} className="fixed left-0 right-0 bottom-[64px] z-10 w-full bg-black/60 backdrop-blur">
+      <form onSubmit={onSend} className="fixed left-0 right-0 z-10 w-full bg-black/60 backdrop-blur" style={{ bottom: `${bottomNavHeight}px` }}>
         <div className="mx-auto flex max-w-2xl items-start gap-1.5 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3">
           <motion.button
             type="button"

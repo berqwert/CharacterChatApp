@@ -15,6 +15,8 @@ export default function ChatPage() {
   const { t } = useTranslation()
   const router = useRouter()
   const [bottomNavHeight, setBottomNavHeight] = useState(64)
+  const [headerHeight, setHeaderHeight] = useState(0)
+  const headerRef = useRef<HTMLDivElement>(null)
   
   const storageKey = character ? `chat-${character.id}` : null
 
@@ -259,10 +261,24 @@ export default function ChatPage() {
       }
     }
     
+    const updateHeaderHeight = () => {
+      if (headerRef.current) {
+        const height = headerRef.current.getBoundingClientRect().height
+        setHeaderHeight(height)
+      }
+    }
+    
     updateBottomNavHeight()
-    window.addEventListener('resize', updateBottomNavHeight)
-    // Re-check after a short delay to ensure nav is rendered
-    const timeout = setTimeout(updateBottomNavHeight, 100)
+    updateHeaderHeight()
+    window.addEventListener('resize', () => {
+      updateBottomNavHeight()
+      updateHeaderHeight()
+    })
+    // Re-check after a short delay to ensure elements are rendered
+    const timeout = setTimeout(() => {
+      updateBottomNavHeight()
+      updateHeaderHeight()
+    }, 100)
     
     return () => {
       window.removeEventListener('resize', updateBottomNavHeight)
@@ -276,7 +292,7 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-[calc(100vh-4rem)] max-h-[100dvh] flex-col w-full overflow-x-hidden">
-      <div className="sticky top-20 sm:top-16 z-40 border-b border-white/10 bg-black/40 px-4 py-3">
+      <div ref={headerRef} className="sticky top-20 sm:top-16 z-40 border-b border-white/20 bg-black backdrop-blur-sm px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="text-2xl flex-shrink-0">{character.avatar}</span>
           <div className="min-w-0 flex-1">
@@ -285,7 +301,7 @@ export default function ChatPage() {
           </div>
         </div>
       </div>
-      <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-4 pt-6 pb-32">
+      <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-4 pb-32" style={{ paddingTop: `${Math.max(headerHeight, 48)}px` }}>
         <AnimatePresence initial={false}>
           {messages.map((m) => (
             <motion.div

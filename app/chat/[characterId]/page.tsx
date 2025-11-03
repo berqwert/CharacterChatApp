@@ -256,7 +256,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] flex-col">
+    <div className="flex h-[calc(100vh-4rem)] max-h-[100dvh] flex-col">
       <div className="border-b border-white/10 bg-black/40 px-4 py-3 backdrop-blur">
         <div className="flex items-center gap-2">
           <span className="text-2xl flex-shrink-0">{character.avatar}</span>
@@ -266,7 +266,7 @@ export default function ChatPage() {
           </div>
         </div>
       </div>
-      <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-4 py-4">
+      <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-4 py-4 pb-32">
         <AnimatePresence initial={false}>
           {messages.map((m) => (
             <motion.div
@@ -324,19 +324,19 @@ export default function ChatPage() {
         </AnimatePresence>
       </div>
 
-      <form onSubmit={onSend} className="sticky bottom-16 z-10 w-full bg-black/60 px-4 py-3 backdrop-blur">
-        <div className="mx-auto flex max-w-2xl items-start gap-2">
+      <form onSubmit={onSend} className="fixed bottom-16 left-0 right-0 z-10 w-full bg-black/60 backdrop-blur">
+        <div className="mx-auto flex max-w-2xl items-start gap-1.5 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3">
           <motion.button
             type="button"
             whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.05 }}
             onClick={resetChat}
-            className="rounded-md bg-white/10 px-2.5 py-2 text-white/70 hover:bg-white/20 hover:text-white transition-all flex-shrink-0 flex items-center gap-1.5 self-start mt-0"
+            className="rounded-md bg-white/10 px-1.5 sm:px-2.5 py-1.5 sm:py-2 text-white/70 hover:bg-white/20 hover:text-white transition-all flex-shrink-0 flex items-center gap-1 sm:gap-1.5 self-start mt-0"
           >
-            <span className="text-base leading-none">↻</span>
-            <span className="text-xs font-medium leading-tight">{t('ChatPage.resetChat')}</span>
+            <span className="text-sm sm:text-base leading-none">↻</span>
+            <span className="text-[10px] sm:text-xs font-medium leading-tight hidden sm:inline">{t('ChatPage.resetChat')}</span>
           </motion.button>
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col min-w-0">
             <input
               value={input}
               onChange={(e) => {
@@ -345,7 +345,7 @@ export default function ChatPage() {
               }}
               placeholder={t('ChatPage.typeMessage')}
               maxLength={MAX_MESSAGE_LENGTH}
-              className={`rounded-md border bg-transparent px-3 py-2 text-sm outline-none transition-colors ${
+              className={`rounded-md border bg-transparent px-2.5 sm:px-3 py-2 text-sm outline-none transition-colors w-full min-w-0 ${
                 inputError 
                   ? 'border-red-500/50 focus:border-red-500' 
                   : 'border-white/10 focus:border-brand'
@@ -370,7 +370,7 @@ export default function ChatPage() {
           </div>
           <button
             type="submit"
-            className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-brand-foreground disabled:opacity-50 self-start mt-0"
+            className="rounded-md bg-brand px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-brand-foreground disabled:opacity-50 self-start mt-0 flex-shrink-0"
             disabled={!input.trim() || isLoading || input.trim().length > MAX_MESSAGE_LENGTH}
           >
             {isLoading ? t('ChatPage.sending') : t('ChatPage.send')}

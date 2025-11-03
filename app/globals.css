@@ -16,6 +16,32 @@ body {
   color: rgb(var(--fg));
 }
 
+/* Mobile keyboard handling */
+@supports (padding: max(0px)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Prevent bottom nav from moving when keyboard opens on mobile */
+@media (max-width: 768px) {
+  nav.fixed {
+    position: fixed !important;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  /* Prevent viewport resize when keyboard opens */
+  html {
+    height: -webkit-fill-available;
+  }
+  
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+}
+
 .container-safe {
   width: 100%;
   max-width: 560px;

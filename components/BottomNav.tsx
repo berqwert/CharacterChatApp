@@ -15,7 +15,7 @@ export function BottomNav() {
     { href: '/characters', labelKey: 'characters', icon: '👤' },
   ]
   return (
-    <nav className="fixed bottom-0 left-0 right-0 border-t border-white/10 bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40">
+    <nav className="fixed bottom-0 left-0 right-0 border-t border-white/10 bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/40 z-50 safe-area-inset-bottom">
       <div className="container-safe flex items-stretch justify-around text-sm">
         {tabs.map((tab) => {
           const active = tab.href === '/' 

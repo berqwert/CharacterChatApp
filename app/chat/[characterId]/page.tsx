@@ -285,7 +285,7 @@ export default function ChatPage() {
           </div>
         </div>
       </div>
-      <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-4 py-4 pb-32">
+      <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-4 pt-6 pb-32">
         <AnimatePresence initial={false}>
           {messages.map((m) => (
             <motion.div

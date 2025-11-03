@@ -324,7 +324,7 @@ export default function ChatPage() {
         </AnimatePresence>
       </div>
 
-      <form onSubmit={onSend} className="fixed bottom-16 left-0 right-0 z-10 w-full bg-black/60 backdrop-blur">
+      <form onSubmit={onSend} className="fixed left-0 right-0 bottom-[64px] z-10 w-full bg-black/60 backdrop-blur">
         <div className="mx-auto flex max-w-2xl items-start gap-1.5 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3">
           <motion.button
             type="button"

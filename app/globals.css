@@ -23,12 +23,18 @@ body {
   }
 }
 
+/* Define bottom nav height as CSS variable */
+:root {
+  --bottom-nav-height: 64px;
+}
+
 /* Prevent bottom nav from moving when keyboard opens on mobile */
 @media (max-width: 768px) {
   nav.fixed {
     position: fixed !important;
     transform: translateZ(0);
     will-change: transform;
+    height: var(--bottom-nav-height) !important;
   }
   
   /* Prevent viewport resize when keyboard opens */
@@ -39,6 +45,11 @@ body {
   body {
     min-height: 100vh;
     min-height: -webkit-fill-available;
+  }
+  
+  /* Ensure form sits directly on top of bottom nav */
+  form.fixed.bottom-\\[64px\\] {
+    bottom: 64px !important;
   }
 }
 

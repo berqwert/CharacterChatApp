@@ -22,11 +22,9 @@ npm run dev
 
 ## Ortam Değişkenleri
 `env.example` dosyasını `.env.local` olarak kopyalayın ve doldurun:
-```
-GROQ_API_KEY=
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-```
+- `GROQ_API_KEY`: [Groq Console](https://console.groq.com/docs/overview)'dan alın
+- `NEXT_PUBLIC_SUPABASE_URL` ve `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Supabase projenizden alın
+- Google Auth ayarları için `env.example` dosyasındaki notlara bakın
 
 ## Komutlar
 - `dev`: Geliştirme sunucusu

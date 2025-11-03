@@ -278,7 +278,7 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-[calc(100vh-4rem)] max-h-[100dvh] flex-col w-full overflow-x-hidden">
-      <div className="sticky top-20 sm:top-16 z-40 border-b border-white/10 bg-black/40 px-4 py-3 backdrop-blur">
+      <div className="sticky top-20 sm:top-16 z-40 border-b border-white/10 bg-black/40 px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="text-2xl flex-shrink-0">{character.avatar}</span>
           <div className="min-w-0 flex-1">

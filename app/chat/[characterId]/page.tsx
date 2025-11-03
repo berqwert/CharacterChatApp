@@ -16,6 +16,7 @@ export default function ChatPage() {
   const router = useRouter()
   const [bottomNavHeight, setBottomNavHeight] = useState(64)
   const [headerHeight, setHeaderHeight] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
   const headerRef = useRef<HTMLDivElement>(null)
   
   const storageKey = character ? `chat-${character.id}` : null
@@ -268,16 +269,23 @@ export default function ChatPage() {
       }
     }
     
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    
     updateBottomNavHeight()
     updateHeaderHeight()
+    checkMobile()
     window.addEventListener('resize', () => {
       updateBottomNavHeight()
       updateHeaderHeight()
+      checkMobile()
     })
     // Re-check after a short delay to ensure elements are rendered
     const timeout = setTimeout(() => {
       updateBottomNavHeight()
       updateHeaderHeight()
+      checkMobile()
     }, 100)
     
     return () => {
@@ -301,7 +309,7 @@ export default function ChatPage() {
           </div>
         </div>
       </div>
-      <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-4 pb-32" style={{ paddingTop: `${Math.max(headerHeight, 48)}px` }}>
+      <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-4 pb-32" style={{ paddingTop: `${Math.max(headerHeight, isMobile ? 80 : 48)}px` }}>
         <AnimatePresence initial={false}>
           {messages.map((m) => (
             <motion.div

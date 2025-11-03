@@ -2,6 +2,8 @@
 
 Minimal, mobile-first Character.AI tarzı sohbet uygulaması. Next.js (App Router), Tailwind CSS, Framer Motion ve Supabase ile geliştirilmiştir. Groq API entegrasyonu ile gerçek zamanlı AI sohbeti sağlar.
 
+**Not:** Bu proje geliştirilirken Cursor AI ve ChatGPT desteği kullanılmıştır.
+
 ## Teknolojiler
 - React + Next.js (App Router)
 - Tailwind CSS
@@ -56,8 +58,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 - JSX: "JSX element implicitly has type 'any'"
   - `next-env.d.ts` dosyasının mevcut olması gerekir (repo’da var). Yoksa ekleyin ve IDE’yi yeniden başlatın.
 
+## Live Demo
+🌐 **[https://character-chat-app-navy.vercel.app](https://character-chat-app-navy.vercel.app)**
+
 ## Deploy (Vercel)
 1) Repo: `https://github.com/berqwert/CharacterChatApp`
-2) Vercel’de yeni proje → GitHub repo’yu bağla
+2) Vercel'de yeni proje → GitHub repo'yu bağla
 3) Environment: `GROQ_API_KEY`, (isteğe bağlı) Supabase değişkenleri
 4) Build: Varsayılan Next.js ayarları

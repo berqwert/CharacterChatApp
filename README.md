@@ -57,7 +57,7 @@ npm run dev
   - `next-env.d.ts` dosyasının mevcut olması gerekir (repo’da var). Yoksa ekleyin ve IDE’yi yeniden başlatın.
 
 ## Live Demo
-🌐 **[https://character-chat-app-navy.vercel.app](https://character-chat-app-navy.vercel.app)**
+**[https://character-chat-app-navy.vercel.app](https://character-chat-app-navy.vercel.app)**
 
 ## Deploy (Vercel)
 1) Repo: `https://github.com/berqwert/CharacterChatApp`
